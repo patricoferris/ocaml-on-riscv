@@ -65,7 +65,7 @@ ENV pk=$RISCV/riscv64-unknown-elf/bin/pk
 # Get OCaml and Cross Compiler :) 
 RUN echo "Building OCaml and Cross Compiler"
 RUN git clone https://github.com/patricoferris/ocaml.git 
-#WORKDIR /ocaml
+WORKDIR /ocaml
 RUN git checkout 4.11
 RUN ./configure --prefix=/riscv-ocaml --disable-ocamldoc --disable-debugger --disable-ocamltest 
 RUN make -j16 world.opt && make install 
