@@ -80,4 +80,4 @@ RUN opam install ocaml-riscv -y
 RUN opam install dune 
 
 WORKDIR /
-ENTRYPOINT ["/bin/bash"] 
+CMD ["/bin/bash"] 

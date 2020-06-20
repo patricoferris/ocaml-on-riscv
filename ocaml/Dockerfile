@@ -80,4 +80,4 @@ RUN cp /riscv-ocaml/bin/ocamlrun runtime
 RUN make install
 
 WORKDIR /
-ENTRYPOINT ["/bin/bash"] 
+CMD ["/bin/bash"] 
