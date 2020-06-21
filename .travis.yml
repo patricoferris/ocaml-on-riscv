@@ -1,0 +1,14 @@
+language: c
+
+services:
+  - docker
+
+before_install:
+- docker pull patricoferris/ocaml-on-riscv:ocaml
+- docker pull patricoferris/ocaml-on-riscv:opam
+- docker pull patricoferris/ocaml-on-riscv:prebuilt
+  
+script:
+- docker run -it -v=`pwd`/tests:/tmp/tests/ patricoferris/ocaml-on-riscv:ocaml /bin/sh -c "/tmp/tests/.travis-ci.sh"
+- docker run -it -v=`pwd`/tests:/tmp/tests/ patricoferris/ocaml-on-riscv:prebuilt /bin/sh -c "/tmp/tests/.travis-ci.sh"
+- docker run -it -v=`pwd`/tests:/tmp/tests/ patricoferris/ocaml-on-riscv:opam /bin/sh -c "/tmp/tests/.travis-ci.sh" 

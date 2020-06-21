@@ -1,5 +1,7 @@
 # OCaml + RISC-V Dockerfiles 
 
+[![Build Status](https://travis-ci.org/patricoferris/ocaml-on-riscv.svg?branch=trunk)](https://travis-ci.org/patricoferris/ocaml-on-riscv)
+
 This repo contains Dockerfiles for getting started with the OCaml cross-compiler for RISC-V. Scheduled for the [4.11 release](https://discuss.ocaml.org/t/ocaml-4-11-0-third-alpha-release-with-risc-v-backend/5997) the OCaml compiler will support RISC-V as a target ISA! Unfortunately, the cross-compiling story isn't quite there yet in the compiler so some modifications have been made to get this working. See [this repo](https://github.com/patricoferris/ocaml/tree/4.11+cross-riscv) for them.
 
 These files build on the work by [@dra27](https://github.com/dra27), [@kcsrk](https://twitter.com/kc_srk), [@SaiVK](https://github.com/SaiVK) and [@nojb](https://twitter.com/nojebar). I just glued the pieces together and wrote README. 
