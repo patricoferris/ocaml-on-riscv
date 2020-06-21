@@ -6,7 +6,7 @@ if opam ; then
     eval $(opam env)
     cd opam/yojson
     dune build -x riscv || /bin/true
-    spike $pk _build/default.riscv/hello.exe
+    spike $pk _build/default.riscv/src/hello.exe
 else
     cd basic 
     ocamlopt -ccopt -static -o hello hello.ml 
