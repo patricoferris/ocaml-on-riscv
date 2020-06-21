@@ -2,7 +2,7 @@ git clone https://github.com/patricoferris/ocaml-on-riscv.git
 cd ocaml-on-riscv && git checkout travis 
 cd tests
 if opam ; then
-    opam install dune yojson yojson-riscv
+    opam install dune yojson yojson-riscv -y
     eval $(opam env)
     cd opam/yojson
     dune build -x riscv || /bin/true
