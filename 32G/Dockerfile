@@ -62,6 +62,9 @@ ENV spike32 "spike --isa=rv32gc"
 ENV gcc32 "riscv-unknown-elf-gcc -static -march=rv32gc" 
 
 # Checkout code before the inline assembly updates 
+RUN git clone https://github.com/patricoferris/ocaml.git
+WORKDIR /ocaml
+RUN git checkout rv32g
 RUN ./configure -no-ocamldoc -no-debugger -prefix /riscv-ocaml -cc "gcc -m32" -as "as --32" -aspp "gcc -m32 -c" -host i386-linux -partialld "ld -r -melf_i386"
 RUN make -j4 world.opt && make install 
 ENV PATH="/riscv-ocaml/bin:${PATH}"
