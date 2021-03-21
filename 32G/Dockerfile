@@ -61,19 +61,30 @@ ENV pk /usr/local/riscv32-unknown-elf/bin/pk
 ENV spike32 "spike --isa=rv32gc"
 ENV gcc32 "riscv-unknown-elf-gcc -static -march=rv32gc" 
 
-# Checkout code before the inline assembly updates 
-RUN git clone https://github.com/patricoferris/ocaml.git
+# Build a normal compiler
+RUN git clone https://github.com/patricoferris/ocaml
 WORKDIR /ocaml
+RUN git checkout 403042794068d29583e8b30e22bde94abaf27192
+RUN ./configure --disable-ocamldoc --disable-debugger --disable-ocamltest --prefix=/riscv-ocaml \
+            --build=x86_64-pc-linux-gnu --host=i386-linux \
+            CC='gcc -m32' AS='as --32' ASPP='gcc -m32 -c' \
+            PARTIALLD='ld -r -melf_i386'
+RUN make -j8 world.opt && make install
+ENV PATH "/riscv-ocaml/bin:${PATH}"
+
+# Build RV32 cross-compiler
 RUN git checkout rv32g
-RUN ./configure -no-ocamldoc -no-debugger -prefix /riscv-ocaml -cc "gcc -m32" -as "as --32" -aspp "gcc -m32 -c" -host i386-linux -partialld "ld -r -melf_i386"
-RUN make -j4 world.opt && make install 
-ENV PATH="/riscv-ocaml/bin:${PATH}"
-# Checkout the latest code with the inline assembly 
-RUN make clean && ./configure --target riscv32-unknown-linux-gnu -prefix /riscv-ocaml -no-ocamldoc -no-debugger -target-bindir /riscv-ocaml/bin && make -j4 world || /bin/true 
-RUN make -j4 opt
-RUN cp /riscv-ocaml/bin/ocamlrun byterun
+RUN make clean
+RUN ./configure --host=riscv32-unknown-linux-gnu --prefix=/riscv-ocaml \
+            --disable-ocamldoc --disable-debugger --disable-ocamltest \
+            --with-target-bindir=/riscv-ocaml/bin \
+            CC='riscv32-unknown-linux-gnu-gcc -g -march=rv32g -mabi=ilp32d' \
+            AS='riscv32-unknown-linux-gnu-as -g -march=rv32g' \
+            ASPP='riscv32-unknown-linux-gnu-gcc -g -march=rv32g -c'
+RUN make -j8 world
+RUN make -j8 opt
+RUN cp /riscv-ocaml/bin/ocamlrun runtime
 RUN make install
-RUN make clean 
 
 WORKDIR /
 ENTRYPOINT ["/bin/bash"]
